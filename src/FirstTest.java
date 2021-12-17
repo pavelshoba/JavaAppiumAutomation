@@ -36,66 +36,24 @@ public class FirstTest {
     }
 
     @Test
-    public void testSearchCancelCheck() {
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
+    public void fieldHasText() {
+        WebElement element_to_init_search = driver.findElementByXPath("//*[contains(@text, 'Search Wikipedia')]");
+        element_to_init_search.click();
 
-        waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                "Testing",
+        WebElement element_to_enter_search_line = assertElementHasText(
+                "//*[contains(@text, 'Search…')]",
                 "Cannot find search input",
                 5
         );
-
-        waitForElementPresent(
-                By.id("org.wikipedia:id/search_results_list"),
-                "Cannot find result of search",
-                15
-        );
-
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Cannot find X to cancel search",
-                5
-        );
-
-        waitForElementNotPresent(
-                By.id("org.wikipedia:id/search_results_list"),
-                "List of result is still present on the page",
-                5
-        );
     }
 
-    private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(error_message + "\n");
-        return wait.until(ExpectedConditions.presenceOfElementLocated(by)
-        );
-    }
-
-    private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds)
-    {
-        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
-        element.click();
-        return element;
-    }
-
-    private WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutInSeconds)
-    {
-        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
-        element.sendKeys(value);
-        return element;
-    }
-
-    private boolean waitForElementNotPresent(By by, String error_message, long timeoutInSeconds)
+    private WebElement assertElementHasText(String xpath, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
+        By by = By.xpath(xpath);
         return wait.until(
-                ExpectedConditions.invisibilityOfElementLocated(by)
+                ExpectedConditions.presenceOfElementLocated(by)
         );
     }
 }
