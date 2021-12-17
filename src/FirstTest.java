@@ -36,8 +36,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testSearchCancelCheck()
-    {
+    public void testSearchCancelCheck() {
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find 'Search Wikipedia' input",
