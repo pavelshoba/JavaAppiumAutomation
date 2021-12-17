@@ -1,6 +1,7 @@
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -10,6 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+
+import static java.lang.String.*;
 
 public class FirstTest {
 
@@ -36,24 +39,54 @@ public class FirstTest {
     }
 
     @Test
-    public void fieldHasText() {
-        WebElement element_to_init_search = driver.findElementByXPath("//*[contains(@text, 'Search Wikipedia')]");
-        element_to_init_search.click();
+    public void testCheckResult()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
 
-        WebElement element_to_enter_search_line = assertElementHasText(
-                "//*[contains(@text, 'Search…')]",
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "JAVA",
                 "Cannot find search input",
                 5
         );
+
+        WebElement title_item = waitForElementPresent(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Cannot find title of item",
+                15
+        );
+
+        String part_of_item = title_item.getAttribute("text");
+
+      Assert.assertEquals(
+              "Not all items have 'Java'",
+              part_of_item.contains("Java"),
+              part_of_item.contains("Java")
+      );
     }
 
-    private WebElement assertElementHasText(String xpath, String error_message, long timeoutInSeconds)
-    {
+    private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
-        By by = By.xpath(xpath);
-        return wait.until(
-                ExpectedConditions.presenceOfElementLocated(by)
+        return wait.until(ExpectedConditions.presenceOfElementLocated(by)
         );
+    }
+
+    private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds)
+    {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        element.click();
+        return element;
+    }
+
+    private WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutInSeconds)
+    {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        element.sendKeys(value);
+        return element;
     }
 }
