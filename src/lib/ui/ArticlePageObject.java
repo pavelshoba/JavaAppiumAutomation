@@ -14,7 +14,8 @@ public class ArticlePageObject extends MainPageObject
         ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
         MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
         MY_LIST_OK_BUTTON = "//*[@text='OK']",
-        CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
+        CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
+        CREATED_LIST_BUTTON = "org.wikipedia:id/item_container";
 
     public ArticlePageObject(AppiumDriver driver)
     {
@@ -83,6 +84,33 @@ public class ArticlePageObject extends MainPageObject
         this.waitForElementAndClick(
                 By.xpath(MY_LIST_OK_BUTTON),
                 "Cannot press 'OK' button",
+                5
+        );
+    }
+
+    public void addSecondArticleToMyList(String name_of_folder)
+    {
+        this.waitForElementAndClick(
+                By.xpath(OPTION_BUTTON),
+                "Cannot find button to open article options",
+                15
+        );
+
+        this.waitForElementPresent(
+                By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON),
+                "Cannot find option to add article to reading list",
+                15
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON),
+                "Cannot click option to add article to reading list",
+                5
+        );
+
+        this.waitForElementAndClick(
+                By.id(CREATED_LIST_BUTTON),
+                "Cannot find created list",
                 5
         );
     }
