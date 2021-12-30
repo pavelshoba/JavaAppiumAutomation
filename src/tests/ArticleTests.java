@@ -2,8 +2,10 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
+import lib.ui.MainPageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 public class ArticleTests extends CoreTestCase
 {
@@ -32,10 +34,24 @@ public class ArticleTests extends CoreTestCase
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Appium");
         SearchPageObject.clickByArticleWithSubstring("Appium");
-
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
         ArticlePageObject.waitForTitleElement();
         ArticlePageObject.swipeToFooter();
 
+    }
+
+    @Test
+    public void testOpenArticleAndCheckTitle()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        String search_title_locator = "//*[@resource-id='org.wikipedia:id/view_page_title_text']";
+        MainPageObject MainPageObject = new MainPageObject(driver);
+        MainPageObject.assertElementPresent(
+                By.xpath(search_title_locator),
+                "A title wasn't found"
+        );
     }
 }
