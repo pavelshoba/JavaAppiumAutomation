@@ -50,7 +50,7 @@ public class ArticleTests extends CoreTestCase
         String search_title_locator = "//*[@resource-id='org.wikipedia:id/view_page_title_text']";
         MainPageObject MainPageObject = new MainPageObject(driver);
         MainPageObject.assertElementPresent(
-                By.xpath(search_title_locator),
+                search_title_locator,
                 "A title wasn't found"
         );
     }
