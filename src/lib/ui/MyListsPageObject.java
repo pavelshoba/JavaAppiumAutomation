@@ -2,13 +2,12 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 
+abstract public class MyListsPageObject extends MainPageObject{
 
-public class MyListsPageObject extends MainPageObject{
-
-    public static final String
-        FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-        ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']",
-        SAVED_ARTICLE = "id:org.wikipedia:id/page_list_item_container";
+    protected static String
+        FOLDER_BY_NAME_TPL,
+        ARTICLE_BY_TITLE_TPL,
+        SAVED_ARTICLE;
 
     private static String getFolderXpathByName(String name_of_folder)
     {
