@@ -10,6 +10,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import lib.Platform;
 
 import java.time.Duration;
 import java.util.List;
@@ -131,12 +132,17 @@ public class MainPageObject {
         int middle_y = (upper_y + lower_y) / 2;
 
         TouchAction action = new TouchAction(driver);
-        action
-                .press(PointOption.point(right_x, middle_y))
-                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
-                .moveTo(PointOption.point(left_x, middle_y))
-                .release()
-                .perform();
+        action.press(PointOption.point(right_x, middle_y));
+        action.waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)));
+
+        if (Platform.getInstance().isAndroid()) {
+            action.moveTo(PointOption.point(left_x, middle_y));
+        } else {
+            int offset_x = (-1 * element.getSize().getWidth());
+            action.moveTo(offset_x, 0);
+        }
+        action.release();
+        action.perform();
     }
 
     public int getAmountOfElements(String locator) {
