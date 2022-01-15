@@ -16,7 +16,11 @@ abstract public class ArticlePageObject extends MainPageObject
         MY_LIST_OK_BUTTON,
         CLOSE_ARTICLE_BUTTON,
         CREATED_LIST_BUTTON,
-        CLOSE_SYNC_WINDOW_BUTTON;
+        CLOSE_SYNC_WINDOW_BUTTON,
+        IMAGE_OF_ARTICLE,
+        CLOSE_IMAGE_BUTTON,
+        NAME_OF_IMAGE;
+
 
     public ArticlePageObject(AppiumDriver driver)
     {
@@ -137,7 +141,7 @@ abstract public class ArticlePageObject extends MainPageObject
         this.waitForElementAndClick(
                 CLOSE_ARTICLE_BUTTON,
                 "Cannot close article, cannot find X link",
-                5
+                15
         );
     }
 
@@ -147,6 +151,39 @@ abstract public class ArticlePageObject extends MainPageObject
                 CLOSE_SYNC_WINDOW_BUTTON,
                 "Cannot close sync window",
                 5
+        );
+    }
+
+    public void openImageOfArticle()
+    {
+        this.waitForElementAndClick(
+                IMAGE_OF_ARTICLE,
+                "Cannot open image of article",
+                5
+        );
+    }
+
+    public WebElement waitForNameOfImage()
+    {
+        return this.waitForElementPresent(NAME_OF_IMAGE, "Cannot find name of image",  15);
+    }
+
+    public String getNameOfImage()
+    {
+        WebElement image_element = waitForNameOfImage();
+        if (Platform.getInstance().isAndroid()) {
+            return image_element.getAttribute("text");
+        } else {
+            return image_element.getAttribute("name");
+        }
+    }
+
+    public void closeImageOfArticle()
+    {
+        this.waitForElementAndClick(
+                CLOSE_IMAGE_BUTTON,
+                "Cannot close image",
+                15
         );
     }
 }

@@ -32,7 +32,10 @@ public class MyListsTests extends CoreTestCase
         } else {
             ArticlePageObject.addArticlesToMySaved();
         }
-        ArticlePageObject.closeSyncWindow();
+
+        if(Platform.getInstance().isIOS()){
+            ArticlePageObject.closeSyncWindow();
+        }
         ArticlePageObject.closeArticle();
 
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
@@ -63,26 +66,44 @@ public class MyListsTests extends CoreTestCase
         } else {
             ArticlePageObject.addArticlesToMySaved();
         }
+        if(Platform.getInstance().isIOS()){
+            ArticlePageObject.closeSyncWindow();
+        }
         ArticlePageObject.closeArticle();
         SearchPageObject.initSearchInput();
-        String article_two = "Appium";
+        if(Platform.getInstance().isIOS()){
+            SearchPageObject.clearSearchField();
+        }
+        String article_two = "Android (operating system)";
         SearchPageObject.typeSearchLine(article_two);
-        SearchPageObject.clickByArticleWithSubstring("Automation for Apps");
-        ArticlePageObject.waitForTitleElement();
-        ArticlePageObject.addSecondArticleToMyList(name_of_folder);
+        SearchPageObject.clickByArticleWithSubstring("Open-source operating system for mobile devices created by Google");
+        if(Platform.getInstance().isAndroid()){
+            ArticlePageObject.addSecondArticleToMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticlesToMySaved();
+        }
+        ArticlePageObject.openImageOfArticle();
+        String name_of_image = ArticlePageObject.getNameOfImage();
+        ArticlePageObject.closeImageOfArticle();
+        if(Platform.getInstance().isAndroid()) {
+            ArticlePageObject.waitForTitleElement();
+        }
         ArticlePageObject.closeArticle();
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
         MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
-        MyListsPageObject.openFolderByName(name_of_folder);
+        if (Platform.getInstance().isAndroid()){
+            MyListsPageObject.openFolderByName(name_of_folder);
+        }
         MyListsPageObject.swipeByArticleToDelete(article_title);
         MyListsPageObject.waitForArticleToAppearByTitle(article_two);
         MyListsPageObject.openSavedArticle();
-        String title_locator = ArticlePageObject.getArticleTitle();
+        ArticlePageObject.openImageOfArticle();
+        String name_image_locator = ArticlePageObject.getNameOfImage();
         assertEquals(
-                "Title of article doesn't match",
-                article_two,
-                title_locator
+                "It's incorrect article",
+                name_of_image,
+                name_image_locator
         );
     }
 }

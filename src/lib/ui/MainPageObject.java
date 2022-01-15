@@ -191,9 +191,9 @@ public class MainPageObject {
 
     private By getLocatorByString(String locator_with_type)
     {
-        String[] exploder_locator = locator_with_type.split(Pattern.quote(":"), 2);
-        String by_type = exploder_locator[0];
-        String locator = exploder_locator[1];
+        String[] exploded_locator = locator_with_type.split(Pattern.quote(":"), 2);
+        String by_type = exploded_locator[0];
+        String locator = exploded_locator[1];
 
         if (by_type.equals("xpath")) {
             return By.xpath(locator);

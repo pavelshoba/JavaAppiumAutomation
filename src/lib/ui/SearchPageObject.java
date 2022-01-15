@@ -10,7 +10,8 @@ abstract public class SearchPageObject extends MainPageObject{
             SEARCH_CANCEL_BUTTON,
             SEARCH_RESULT_BY_SUBSTRING_TPL,
             SEARCH_RESULT_ELEMENT,
-            SEARCH_EMPTY_RESULT_ELEMENT;
+            SEARCH_EMPTY_RESULT_ELEMENT,
+            SEARCH_CLEAR_BUTTON;
 
     public SearchPageObject(AppiumDriver driver)
     {
@@ -78,6 +79,15 @@ abstract public class SearchPageObject extends MainPageObject{
     public void assertThereIsNoResultOfSearch()
     {
         this.assertElementNotPresent(SEARCH_RESULT_ELEMENT,"We supposed not to find any results");
+    }
+
+    public void clearSearchField()
+    {
+        this.waitForElementAndClick(
+                SEARCH_CLEAR_BUTTON,
+                "Cannot clear search field",
+                5
+        );
     }
 }
 
