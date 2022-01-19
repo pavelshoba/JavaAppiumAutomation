@@ -63,4 +63,21 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.clickCancelSearch();
         SearchPageObject.assertThereIsNoResultOfSearch();
     }
+
+    @Test
+    public void testCheckResult()
+    {
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.getAmountOfFoundArticles();
+        String part_of_item = SearchPageObject.getNameTitles();
+        assertEquals(
+                "Not all items have 'Java'",
+                part_of_item.contains("Java"),
+                part_of_item.contains("Java")
+        );
+    }
 }
+
+

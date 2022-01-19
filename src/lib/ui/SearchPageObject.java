@@ -1,6 +1,8 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
+import org.openqa.selenium.WebElement;
 
 abstract public class SearchPageObject extends MainPageObject{
 
@@ -11,7 +13,8 @@ abstract public class SearchPageObject extends MainPageObject{
             SEARCH_RESULT_BY_SUBSTRING_TPL,
             SEARCH_RESULT_ELEMENT,
             SEARCH_EMPTY_RESULT_ELEMENT,
-            SEARCH_CLEAR_BUTTON;
+            SEARCH_CLEAR_BUTTON,
+            SEARCH_TITLE_IN_LIST;
 
     public SearchPageObject(AppiumDriver driver)
     {
@@ -81,13 +84,22 @@ abstract public class SearchPageObject extends MainPageObject{
         this.assertElementNotPresent(SEARCH_RESULT_ELEMENT,"We supposed not to find any results");
     }
 
-    public void clearSearchField()
-    {
+    public void clearSearchField() {
         this.waitForElementAndClick(
                 SEARCH_CLEAR_BUTTON,
                 "Cannot clear search field",
                 5
         );
+    }
+
+    public String getNameTitles()
+    {
+        WebElement title_item = waitForElementPresent(SEARCH_TITLE_IN_LIST, "Cannot find title of item", 15);
+        if (Platform.getInstance().isAndroid()) {
+            return title_item.getAttribute("text");
+        } else {
+            return title_item.getAttribute("name");
+        }
     }
 }
 
